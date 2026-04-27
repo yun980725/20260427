@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽籤程式</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .number {
+            font-size: 5em;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+        .number.rolling {
+            animation: roll 0.1s infinite;
+        }
+        @keyframes roll {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #ff5252;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>抽籤程式</h1>
+        <div class="number" id="number">?</div>
+        <button id="drawButton">開始抽籤</button>
+    </div>
+
+    <script>
+        const numberElement = document.getElementById('number');
+        const drawButton = document.getElementById('drawButton');
+
+        drawButton.addEventListener('click', () => {
+            drawButton.disabled = true;
+            numberElement.classList.add('rolling');
+            
+            let rollCount = 0;
+            const maxRolls = 20;
+            const rollInterval = setInterval(() => {
+                const randomNum = Math.floor(Math.random() * 22) + 1;
+                numberElement.textContent = randomNum;
+                rollCount++;
+                
+                if (rollCount >= maxRolls) {
+                    clearInterval(rollInterval);
+                    numberElement.classList.remove('rolling');
+                    drawButton.disabled = false;
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
